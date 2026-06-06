@@ -438,7 +438,7 @@ for index,row in df.head(20).iterrows():
     c1,c2,c3 = st.columns([1,5,2])
 
     with c1:
-        thumb = row.get('thumbnail',None)
+        thumb = row.get('thumbnail', None)
 
         if pd.notna(thumb):
             st.image(thumb,width=80)
