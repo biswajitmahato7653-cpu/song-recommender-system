@@ -276,85 +276,124 @@ with main_left:
                 st.divider()
 
 with main_right:
+
     st.markdown("""
-    <div style="
-        height:350px;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        flex-direction:column;
-    ">
-        <h1 style="
+    <div style='
+        text-align:center;
+        margin-top:60px;
+    '>
+
+        <h1 style='
             font-size:120px;
             color:#00eaff;
-            text-shadow:0 0 20px cyan,0 0 50px cyan;
-            margin:0;
-        ">
+            text-shadow:0 0 25px cyan;
+            margin-bottom:10px;
+        '>
             UNIX
         </h1>
 
-        <p style="
+        <p style='
             color:#00eaff;
-            font-size:28px;
+            font-size:26px;
             letter-spacing:3px;
-        ">
+        '>
             LIVE. CODE. RECOMMEND.
         </p>
+
     </div>
     """, unsafe_allow_html=True)
-
  
 
 
-# ==========================
-# RECOMMENDED FOR YOU
-# ==========================
-if search_btn and user_input and rec_songs:
-    st.markdown("<div class='section-title'>⭐ RECOMMENDED FOR YOU</div>", unsafe_allow_html=True)
-    for song in rec_songs[:5]:
-        c1, c2 = st.columns([1,3])
-        with c1:
-            if song.get("thumbnail"):
-                st.image(song["thumbnail"], width=100)
-        with c2:
-            st.markdown(f"**{song['song']}**")
-            st.caption(song.get("artist",""))
-        st.divider()
+
 
 # ==========================
 # ALL SONGS LIBRARY (Styled)
 # ==========================
-st.markdown("<div class='section-title'>🎵 ALL SONGS LIBRARY</div>", unsafe_allow_html=True)
-for index,row in df.head(20).iterrows():
+st.markdown(
+    "<div class='section-title'>🎵 ALL SONGS LIBRARY</div>",
+    unsafe_allow_html=True
+)
+
+songs = df.head(10)
+
+cols = st.columns(5)
+
+for i, (_, row) in enumerate(songs.iterrows()):
+
     song_name = row['song_name'] if 'song_name' in df.columns else row['Song Name']
     artist_name = row['artist'] if 'artist' in df.columns else row['Artist']
-    c1, c2, c3 = st.columns([1,5,2], gap="medium")  # Add gap to separate columns
-    with c1:
-        thumb = row.get('thumbnail', None)
+
+    with cols[i % 5]:
+
+        thumb = row.get("thumbnail")
+
         if pd.notna(thumb):
-            st.image(thumb, width=100, output_format="auto")  # slightly bigger thumbnail
-    with c2:
-        st.markdown(f"<b style='font-size:18px;color:#ffffff;text-shadow:0 0 10px cyan;'>{song_name}</b>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:#00d9ff;font-size:14px;'>{artist_name}</span>", unsafe_allow_html=True)
-    with c3:
-        q = f"{song_name} {artist_name}".replace(" ", "+")
-        st.link_button(
-            "▶ YOUTUBE PLAY",
-            f"https://www.youtube.com/results?search_query={q}",
-            use_container_width=True
+            st.image(thumb, use_container_width=True)
+
+        st.markdown(
+            f"<h4 style='text-align:center;color:white'>{song_name}</h4>",
+            unsafe_allow_html=True
         )
 
+        st.markdown(
+            f"<p style='text-align:center;color:#00d9ff'>{artist_name}</p>",
+            unsafe_allow_html=True
+        )
+
+        q = f"{song_name} {artist_name}".replace(" ","+")
+
+        st.link_button(
+            "🟢 PLAY",
+            f"https://open.spotify.com/search/{q}",
+            use_container_width=True
+        )
 # ==========================
 # RECOMMENDED FOR YOU (Styled)
 # ==========================
 if search_btn and user_input and rec_songs:
-    st.markdown("<div class='section-title'>⭐ RECOMMENDED FOR YOU</div>", unsafe_allow_html=True)
-    for song in rec_songs[:5]:
-        c1, c2 = st.columns([1,3], gap="medium")
-        with c1:
+
+    st.markdown(
+        "<div class='section-title'>⭐ RECOMMENDED FOR YOU</div>",
+        unsafe_allow_html=True
+    )
+
+    cols = st.columns(5)
+
+    for i, song in enumerate(rec_songs[:5]):
+
+        with cols[i]:
+
+            st.markdown("""
+            <div style="
+                background:rgba(0,10,30,.85);
+                border:1px solid #9c4dff;
+                border-radius:20px;
+                padding:12px;
+                text-align:center;
+                box-shadow:0 0 15px rgba(156,77,255,.4);
+            ">
+            """, unsafe_allow_html=True)
+
             if song.get("thumbnail"):
-                st.image(song["thumbnail"], width=110)  # slightly bigger thumbnail for style
-        with c2:
-            st.markdown(f"<b style='font-size:18px;color:#ffffff;text-shadow:0 0 10px cyan;'>{song['song']}</b>", unsafe_allow_html=True)
-            st.markdown(f"<span style='color:#00d9ff;font-size:14px;'>{song.get('artist','')}</span>", unsafe_allow_html=True)
-        st.divider()
+                st.image(song["thumbnail"], use_container_width=True)
+
+            st.markdown(
+                f"<h4 style='color:white'>{song['song']}</h4>",
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                f"<p style='color:#00d9ff'>{song.get('artist','')}</p>",
+                unsafe_allow_html=True
+            )
+
+            spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ","+")
+
+            st.link_button(
+                "🟢 PLAY",
+                f"https://open.spotify.com/search/{spotify_query}",
+                use_container_width=True
+            )
+
+            st.markdown("</div>", unsafe_allow_html=True)
