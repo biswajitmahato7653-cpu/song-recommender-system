@@ -210,11 +210,43 @@ with right:
 # ==========================
 # SEARCH
 # ==========================
-search_left, search_right = st.columns([5,1])
-with search_left:
-    user_input = st.text_input("", placeholder="🔍 Search for a song...", key="unix_search")
-with search_right:
-    search_btn = st.button("🔍 SEARCH", use_container_width=True)
+main_left, main_right = st.columns([2,1])
+
+with main_left:
+    user_input = st.text_input(
+        "",
+        placeholder="🔍 Search for a song..."
+    )
+    search_btn = st.button("SEARCH")
+
+    # Search Results
+    if search_btn and user_input:
+        rec_songs = recommend(user_input)
+        if rec_songs:
+            st.markdown("<div class='section-title'>🔎 SEARCH RESULT</div>", unsafe_allow_html=True)
+            for song in rec_songs[:5]:
+                c1, c2 = st.columns([1,3])
+                with c1:
+                    if song.get("thumbnail"):
+                        st.image(song["thumbnail"], width=130)
+                with c2:
+                    st.markdown(f"### {song['song']}")
+                    st.write(f"🎤 {song.get('artist','')}")
+                    spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
+                    b1, b2 = st.columns(2)
+                    with b1:
+                        st.link_button("🟢 PLAY ON SPOTIFY", f"https://open.spotify.com/search/{spotify_query}", use_container_width=True)
+                    with b2:
+                        st.link_button("▶ YOUTUBE PLAY", f"https://www.youtube.com/results?search_query={spotify_query}", use_container_width=True)
+                st.divider()
+
+with main_right:
+    st.markdown("""
+    <div class="unix-box">
+        <h1>UNIX</h1>
+        <p>LIVE. CODE. RECOMMEND.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ==========================
 # SEARCH RESULTS
