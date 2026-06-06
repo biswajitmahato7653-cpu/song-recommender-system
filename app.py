@@ -322,20 +322,39 @@ if search_btn and user_input and rec_songs:
         st.divider()
 
 # ==========================
-# ALL SONGS LIBRARY
+# ALL SONGS LIBRARY (Styled)
 # ==========================
 st.markdown("<div class='section-title'>🎵 ALL SONGS LIBRARY</div>", unsafe_allow_html=True)
 for index,row in df.head(20).iterrows():
     song_name = row['song_name'] if 'song_name' in df.columns else row['Song Name']
     artist_name = row['artist'] if 'artist' in df.columns else row['Artist']
-    c1,c2,c3 = st.columns([1,5,2])
+    c1, c2, c3 = st.columns([1,5,2], gap="medium")  # Add gap to separate columns
     with c1:
-        thumb = row.get('thumbnail',None)
+        thumb = row.get('thumbnail', None)
         if pd.notna(thumb):
-            st.image(thumb,width=80)
+            st.image(thumb, width=100, output_format="auto")  # slightly bigger thumbnail
     with c2:
-        st.markdown(f"**{song_name}**")
-        st.caption(artist_name)
+        st.markdown(f"<b style='font-size:18px;color:#ffffff;text-shadow:0 0 10px cyan;'>{song_name}</b>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:#00d9ff;font-size:14px;'>{artist_name}</span>", unsafe_allow_html=True)
     with c3:
-        q=f"{song_name} {artist_name}".replace(" ","+")
-        st.link_button("▶ YOUTUBE PLAY", f"https://www.youtube.com/results?search_query={q}")
+        q = f"{song_name} {artist_name}".replace(" ", "+")
+        st.link_button(
+            "▶ YOUTUBE PLAY",
+            f"https://www.youtube.com/results?search_query={q}",
+            use_container_width=True
+        )
+
+# ==========================
+# RECOMMENDED FOR YOU (Styled)
+# ==========================
+if search_btn and user_input and rec_songs:
+    st.markdown("<div class='section-title'>⭐ RECOMMENDED FOR YOU</div>", unsafe_allow_html=True)
+    for song in rec_songs[:5]:
+        c1, c2 = st.columns([1,3], gap="medium")
+        with c1:
+            if song.get("thumbnail"):
+                st.image(song["thumbnail"], width=110)  # slightly bigger thumbnail for style
+        with c2:
+            st.markdown(f"<b style='font-size:18px;color:#ffffff;text-shadow:0 0 10px cyan;'>{song['song']}</b>", unsafe_allow_html=True)
+            st.markdown(f"<span style='color:#00d9ff;font-size:14px;'>{song.get('artist','')}</span>", unsafe_allow_html=True)
+        st.divider()
