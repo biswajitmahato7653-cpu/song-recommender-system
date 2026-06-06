@@ -147,87 +147,81 @@ st.set_page_config(page_title="Song Recommender", layout="wide")
 # ==========================
 st.markdown("""
 <style>
+
+/* FULL APP BACKGROUND */
 .stApp{
     background-image:url("https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg");
     background-size:cover;
     background-position:center;
+    background-repeat:no-repeat;
     background-attachment:fixed;
 }
 
-.hero-title {
-    white-space: nowrap;
-    line-height: 1.1;
-    font-size: 75px;  /* boro kore dilo */
-    font-weight: 900;
-    text-align: center;
-    background: linear-gradient(90deg, #00ff88, #00eaff, #7d7dff, #ff4df8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 15px cyan, 0 0 30px cyan, 0 0 60px cyan;
+/* GLASS EFFECT */
+.search-box{
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(8px);
+    border:1px solid #00d9ff;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 0 20px rgba(0,255,255,.4);
 }
 
-.terminal-box {
-    background: rgba(0,0,0,.75);
-    padding: 20px;
-    border-radius: 20px;
-    border: 2px solid #00ff88;
-    box-shadow: 0 0 25px #00ff88;
+/* TITLE */
+.hero-title{
+    font-size:72px;
+    font-weight:900;
+    text-align:center;
+    color:#7df9ff;
+    text-shadow:
+        0 0 10px cyan,
+        0 0 20px cyan,
+        0 0 40px cyan,
+        0 0 80px cyan;
 }
 
-.monitor-box {
-    background: rgba(0,0,0,.75);
-    padding: 20px;
-    border-radius: 20px;
-    border: 2px solid cyan;
-    box-shadow: 0 0 25px cyan;
+/* SEARCH INPUT */
+.stTextInput input{
+    background:rgba(0,0,0,.85);
+    border:2px solid cyan;
+    color:white;
+    border-radius:18px;
+    height:65px !important;
+    font-size:22px;
+    box-shadow:0 0 10px cyan;
 }
 
-.stTextInput input {
-    background: rgba(0,0,0,.85);
-    border: 2px solid cyan;
-    color: white;
-    border-radius: 18px;
-
-    height: 65px !important;
-    font-size: 22px;
-
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
-    padding-left: 20px !important;
-
-    box-shadow: 0 0 10px cyan,
-                0 0 25px rgba(0,255,255,.4);
-
-    width:100%;
-}
-            /* Remove Streamlit anchor/link icon */
-[data-testid="stHeaderActionElements"] {
-    display: none !important;
+/* BUTTONS */
+.stButton button{
+    background:linear-gradient(90deg,#00eaff,#7d7dff);
+    color:white;
+    border:none;
+    border-radius:14px;
+    font-size:18px;
+    font-weight:bold;
+    box-shadow:0 0 10px cyan;
 }
 
-a[aria-label="Anchor link"] {
-    display: none !important;
+/* SONG CARDS */
+.song-row{
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(0,255,255,.3);
+    border-radius:16px;
+    padding:15px;
+    margin-bottom:12px;
+    box-shadow:0 0 15px rgba(0,255,255,.25);
 }
 
-.stButton button {
-    background: linear-gradient(90deg, #00eaff, #7d7dff);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    padding: 14px 30px;
-    font-size: 18px;
-    font-weight: bold;
-    box-shadow: 0 0 10px cyan, 0 0 30px rgba(0,255,255,.5);
+/* SECTION TITLES */
+.section-title{
+    color:#00d9ff;
+    font-size:34px;
+    font-weight:800;
+    text-shadow:0 0 10px cyan;
+    margin-top:25px;
 }
 
-.custom-player-container {
-    background: rgba(0,0,0,.75);
-    border: 2px solid cyan;
-    border-radius: 18px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 0 20px cyan;
-}
 </style>
 """, unsafe_allow_html=True)
 
