@@ -147,11 +147,11 @@ st.set_page_config(page_title="Song Recommender", layout="wide")
 # ==========================
 st.markdown("""
 <style>
-.stApp {
-    background: #07111f;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+.stApp{
+    background-image:url("https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
 }
 
 .hero-title {
