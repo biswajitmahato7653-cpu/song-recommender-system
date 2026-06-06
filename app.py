@@ -275,12 +275,11 @@ if search_btn and user_input:
     else:
         st.error("No recommendations found.")
 
-# ==========================
-# RECOMMENDED & LIBRARY
-# ==========================
-st.markdown("<br><br>", unsafe_allow_html=True)
 
-if search_btn and user_input and len(rec_songs) > 0:
+# ==========================
+# RECOMMENDED FOR YOU
+# ==========================
+if search_btn and user_input and rec_songs:
     st.markdown("<div class='section-title'>⭐ RECOMMENDED FOR YOU</div>", unsafe_allow_html=True)
     for song in rec_songs[:5]:
         c1, c2 = st.columns([1,3])
@@ -292,6 +291,9 @@ if search_btn and user_input and len(rec_songs) > 0:
             st.caption(song.get("artist",""))
         st.divider()
 
+# ==========================
+# ALL SONGS LIBRARY
+# ==========================
 st.markdown("<div class='section-title'>🎵 ALL SONGS LIBRARY</div>", unsafe_allow_html=True)
 for index,row in df.head(20).iterrows():
     song_name = row['song_name'] if 'song_name' in df.columns else row['Song Name']
