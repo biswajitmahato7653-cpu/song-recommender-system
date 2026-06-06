@@ -138,18 +138,25 @@ st.markdown("""
     box-shadow:0 0 25px cyan;
 }
 
+/* Search input */
 .stTextInput input{
     background: rgba(0,0,0,.85);
     border:2px solid cyan;
     color:white;
     border-radius:18px;
-    height:65px !important;
-    font-size:22px;
+
+    height:55px !important;
+    min-height:55px !important;
+
+    font-size:20px;
     padding-left:20px !important;
+
     width:100%;
-    box-shadow:0 0 10px cyan,0 0 25px rgba(0,255,255,.4);
+    box-shadow:0 0 10px cyan,
+               0 0 25px rgba(0,255,255,.4);
 }
 
+/* Search button */
 .stButton button{
     background:linear-gradient(90deg,#00eaff,#7d7fff);
     color:white;
@@ -158,7 +165,12 @@ st.markdown("""
     padding:14px 30px;
     font-size:18px;
     font-weight:bold;
-    box-shadow:0 0 10px cyan,0 0 30px rgba(0,255,255,.5);
+
+    height:55px !important;
+    margin-top:0px !important;
+
+    box-shadow:0 0 10px cyan,
+               0 0 30px rgba(0,255,255,.5);
 }
 
 .result-card{
@@ -203,10 +215,30 @@ st.markdown("""
 # ==========================
 left,right = st.columns([1,1])
 with left:
-    st.markdown("<div class='terminal-box'><pre style='color:#00ff88'>user@unix-system:~$ ls la\ntotal 1024\ndataset loaded...\nmodel active...\nspotify connected...\nAI engine ready...</pre></div>", unsafe_allow_html=True)
-with right:
-    st.markdown("<div class='monitor-box'><pre style='color:#00ffcc'>CPU  [|||||||||||] 42%\nRAM  [|||||||||| ] 68%\nSWAP [|||        ] 10%\nSpotify Running\nRecommendation Engine Online</pre></div>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style='
+        background-image:url("https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg");
+        background-size: cover;
+        background-position: center;
+        height:200px;
+        border-radius:20px;
+        box-shadow:0 0 25px #00ff88;
+    '>
+    </div>
+    """, unsafe_allow_html=True)
 
+with right:
+    st.markdown(f"""
+    <div style='
+        background-image:url("https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg");
+        background-size: cover;
+        background-position: center;
+        height:200px;
+        border-radius:20px;
+        box-shadow:0 0 25px cyan;
+    '>
+    </div>
+    """, unsafe_allow_html=True)
 # ==========================
 # SEARCH
 # ==========================
@@ -241,39 +273,12 @@ with main_left:
                 st.divider()
 
 with main_right:
-    st.markdown("""
-    <div class="unix-box">
-        <h1>UNIX</h1>
-        <p>LIVE. CODE. RECOMMEND.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.image(
+        "https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg",
+        use_container_width=True
+    )
 
-# ==========================
-# SEARCH RESULTS
-# ==========================
-if search_btn and user_input:
-    user_input = user_input.strip()
-    rec_songs = recommend(user_input)
-
-    if len(rec_songs) > 0:
-        st.markdown("<div class='section-title'>🔎 SEARCH RESULT</div>", unsafe_allow_html=True)
-        for song in rec_songs[:5]:
-            c1, c2 = st.columns([1,3])
-            with c1:
-                if song.get("thumbnail"):
-                    st.image(song["thumbnail"], width=130)
-            with c2:
-                st.markdown(f"### {song['song']}")
-                st.write(f"🎤 {song.get('artist','')}")
-                spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
-                b1, b2 = st.columns(2)
-                with b1:
-                    st.link_button("🟢 PLAY ON SPOTIFY", f"https://open.spotify.com/search/{spotify_query}", use_container_width=True)
-                with b2:
-                    st.link_button("▶ YOUTUBE PLAY", f"https://www.youtube.com/results?search_query={spotify_query}", use_container_width=True)
-                st.divider()
-    else:
-        st.error("No recommendations found.")
+ 
 
 
 # ==========================
