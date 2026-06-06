@@ -249,7 +249,10 @@ with main_left:
         "",
         placeholder="🔍 Search for a song..."
     )
-    search_btn = st.button("SEARCH")
+    search_btn = st.button(
+    "🔍 SEARCH",
+    use_container_width=True
+)
 
     # Search Results
     if search_btn and user_input:
@@ -273,10 +276,32 @@ with main_left:
                 st.divider()
 
 with main_right:
-    st.image(
-        "https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg",
-        use_container_width=True
-    )
+    st.markdown("""
+    <div style="
+        height:350px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        flex-direction:column;
+    ">
+        <h1 style="
+            font-size:120px;
+            color:#00eaff;
+            text-shadow:0 0 20px cyan,0 0 50px cyan;
+            margin:0;
+        ">
+            UNIX
+        </h1>
+
+        <p style="
+            color:#00eaff;
+            font-size:28px;
+            letter-spacing:3px;
+        ">
+            LIVE. CODE. RECOMMEND.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
  
 
