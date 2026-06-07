@@ -251,134 +251,65 @@ with right:
 # SEARCH
 # ==========================
 main_left, main_right = st.columns([2,1])
+rec_songs = []
 
 with main_left:
+
     user_input = st.text_input(
         "",
         placeholder="🔍 Search for a song..."
     )
+
     search_btn = st.button(
-    "🔍 SEARCH",
-    use_container_width=True
-)
-
-    # Search Results
-if search_btn and user_input:
-
-    with st.spinner("🎵 Finding best songs..."):
-        rec_songs = recommend(user_input)
-
-    if rec_songs:
-
-        st.markdown(
-            "<div class='section-title'>🔎 SEARCH RESULT</div>",
-            unsafe_allow_html=True
-        )
-
-        song = rec_songs[0]
-
-        c1, c2 = st.columns([1,3])
-
-        with c1:
-            if song.get("thumbnail"):
-                st.image(song["thumbnail"], width=130)
-
-        with c2:
-            st.markdown(f"### {song['song']}")
-            st.write(f"🎤 {song.get('artist','')}")
-
-            spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
-
-            b1, b2 = st.columns(2)
-
-            with b1:
-                st.link_button(
-                    "🟢 PLAY ON SPOTIFY",
-                    f"https://open.spotify.com/search/{spotify_query}",
-                    use_container_width=True
-                )
-
-            with b2:
-                st.link_button(
-                    "▶ YOUTUBE PLAY",
-                    f"https://www.youtube.com/results?search_query={spotify_query}",
-                    use_container_width=True
-                )
-
-        st.divider()
-  
-### Eita thik:
-
-if rec_songs:
-
-    st.markdown(
-        "<div class='section-title'>🔎 SEARCH RESULT</div>",
-        unsafe_allow_html=True
+        "🔍 SEARCH",
+        use_container_width=True
     )
 
-    song = rec_songs[0]
+    if search_btn and user_input:
 
-    c1, c2 = st.columns([1,3])
+        with st.spinner("🎵 Finding best songs..."):
+            rec_songs = recommend(user_input)
 
-    with c1:
-        if song.get("thumbnail"):
-            st.image(song["thumbnail"], width=130)
+        if rec_songs:
 
-    with c2:
-        st.markdown(f"### {song['song']}")
-        st.write(f"🎤 {song.get('artist','')}")
-
-        spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
-
-        b1, b2 = st.columns(2)
-
-        with b1:
-            st.link_button(
-                "🟢 PLAY ON SPOTIFY",
-                f"https://open.spotify.com/search/{spotify_query}",
-                use_container_width=True
+            st.markdown(
+                "<div class='section-title'>🔎 SEARCH RESULT</div>",
+                unsafe_allow_html=True
             )
 
-        with b2:
-            st.link_button(
-                "▶ YOUTUBE PLAY",
-                f"https://www.youtube.com/results?search_query={spotify_query}",
-                use_container_width=True
-            )
+            song = rec_songs[0]
 
-    st.divider()
+            c1, c2 = st.columns([1, 3])
 
+            with c1:
+                if song.get("thumbnail"):
+                    st.image(song["thumbnail"], width=130)
 
-with main_right:
+            with c2:
 
-    st.markdown("""
-    <div style='
-        text-align:center;
-        margin-top:60px;
-    '>
+                st.markdown(f"### {song['song']}")
+                st.write(f"🎤 {song.get('artist','')}")
 
-        <h1 style='
-            font-size:120px;
-            color:#00eaff;
-            text-shadow:0 0 25px cyan;
-            margin-bottom:10px;
-        '>
-            UNIX
-        </h1>
+                spotify_query = (
+                    f"{song['song']} {song.get('artist','')}"
+                    .replace(" ", "+")
+                )
 
-        <p style='
-            color:#00eaff;
-            font-size:26px;
-            letter-spacing:3px;
-        '>
-            LIVE. CODE. RECOMMEND.
-        </p>
+                b1, b2 = st.columns(2)
 
-    </div>
-    """, unsafe_allow_html=True)
- 
+                with b1:
+                    st.link_button(
+                        "🟢 PLAY ON SPOTIFY",
+                        f"https://open.spotify.com/search/{spotify_query}",
+                        use_container_width=True
+                    )
 
-
+                with b2:
+                    st.link_button(
+                        "▶ YOUTUBE PLAY",
+                        f"https://www.youtube.com/results?search_query={spotify_query}",
+                        use_container_width=True
+                    )
 
 
 # ==========================
