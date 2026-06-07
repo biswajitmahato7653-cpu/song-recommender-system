@@ -385,7 +385,6 @@ for i, (_, row) in enumerate(df.head(10).iterrows()):
 # RECOMMENDED FOR YOU (Styled)
 # ==========================
 if search_btn and user_input:
-
     with st.spinner("🎵 Finding best songs..."):
         rec_songs = recommend(user_input)
 
