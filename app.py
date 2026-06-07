@@ -263,11 +263,49 @@ with main_left:
 )
 
     # Search Results
-    if search_btn and user_input:
+if search_btn and user_input:
 
-     with st.spinner("🎵 Finding best songs..."):
+    with st.spinner("🎵 Finding best songs..."):
         rec_songs = recommend(user_input)
 
+    if rec_songs:
+
+        st.markdown(
+            "<div class='section-title'>🔎 SEARCH RESULT</div>",
+            unsafe_allow_html=True
+        )
+
+        song = rec_songs[0]
+
+        c1, c2 = st.columns([1,3])
+
+        with c1:
+            if song.get("thumbnail"):
+                st.image(song["thumbnail"], width=130)
+
+        with c2:
+            st.markdown(f"### {song['song']}")
+            st.write(f"🎤 {song.get('artist','')}")
+
+            spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
+
+            b1, b2 = st.columns(2)
+
+            with b1:
+                st.link_button(
+                    "🟢 PLAY ON SPOTIFY",
+                    f"https://open.spotify.com/search/{spotify_query}",
+                    use_container_width=True
+                )
+
+            with b2:
+                st.link_button(
+                    "▶ YOUTUBE PLAY",
+                    f"https://www.youtube.com/results?search_query={spotify_query}",
+                    use_container_width=True
+                )
+
+        st.divider()
   
 ### Eita thik:
 
@@ -389,19 +427,17 @@ if search_btn and user_input:
 
     with st.spinner("🎵 Finding best songs..."):
         rec_songs = recommend(user_input)
-
-    if rec_songs:
-        ...
+        if rec_songs:
         st.markdown(
             "<div class='section-title'>🔎 SEARCH RESULT</div>",
             unsafe_allow_html=True
         )
 
-    cols = st.columns(5)
+        cols = st.columns(5)
 
-    for i, song in enumerate(rec_songs[:5]):
-
-        with cols[i]:
+        for i, song in enumerate(rec_songs[:5]):
+            with cols[i]:
+                ...
 
             st.markdown("""
             <div style="
