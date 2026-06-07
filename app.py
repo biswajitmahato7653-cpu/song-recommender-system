@@ -101,19 +101,109 @@ def recommend(query, topn=10):
 st.set_page_config(page_title="Song Recommender", layout="wide")
 
 # ==========================
-# CSS
+# CSS & STYLE
 # ==========================
 st.markdown("""
 <style>
-.stApp { background-image:url('https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg'); background-size:cover; background-position:center; }
-.hero-title{ font-size:75px; font-weight:900; text-align:center; background: linear-gradient(90deg,#00ff88,#00eaff,#7d7dff,#ff4df8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 15px cyan,0 0 30px cyan; }
-.section-title{ color:#00d9ff; font-size:32px; font-weight:800; margin-top:25px; }
-.stTextInput input{ background: rgba(0,0,0,.85); border:2px solid cyan; color:white; border-radius:18px; height:55px !important; font-size:20px; padding-left:20px !important; width:100%; box-shadow:0 0 10px cyan,0 0 25px rgba(0,255,255,.4); }
-.stButton button{ background:linear-gradient(90deg,#00eaff,#7d7fff); color:white; border:none; border-radius:14px; padding:14px 30px; font-size:18px; font-weight:bold; height:55px !important; margin-top:0px !important; box-shadow:0 0 10px cyan,0 0 30px rgba(0,255,255,.5); }
-.song-card{background:rgba(0,0,0,.65); padding:15px; border-radius:20px; border:1px solid cyan; text-align:center; box-shadow:0 0 15px rgba(0,255,255,.4); margin-bottom:15px;}
-.song-card:hover{transform:scale(1.05); transition:.3s;}
-.button-spotify{background:#1DB954;color:white; padding:8px 10px; border-radius:8px; text-decoration:none; display:inline-block; margin:5px;}
-.button-youtube{background:#FF0000;color:white; padding:8px 10px; border-radius:8px; text-decoration:none; display:inline-block; margin:5px;}
+.stApp{
+    background-image:url("https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+}
+
+.hero-title{
+    font-size:75px;
+    font-weight:900;
+    text-align:center;
+    background: linear-gradient(90deg,#00ff88,#00eaff,#7d7dff,#ff4df8);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 15px cyan,0 0 30px cyan,0 0 60px cyan;
+}
+
+.terminal-box{
+    background: rgba(0,0,0,.75);
+    padding: 20px;
+    border-radius: 20px;
+    border:2px solid #00ff88;
+    box-shadow:0 0 25px #00ff88;
+}
+
+.monitor-box{
+    background: rgba(0,0,0,.75);
+    padding: 20px;
+    border-radius: 20px;
+    border:2px solid cyan;
+    box-shadow:0 0 25px cyan;
+}
+
+/* Search input */
+.stTextInput input{
+    background: rgba(0,0,0,.85);
+    border:2px solid cyan;
+    color:white;
+    border-radius:18px;
+
+    height:55px !important;
+    min-height:55px !important;
+
+    font-size:20px;
+    padding-left:20px !important;
+
+    width:100%;
+    box-shadow:0 0 10px cyan,
+               0 0 25px rgba(0,255,255,.4);
+}
+
+/* Search button */
+.stButton button{
+    background:linear-gradient(90deg,#00eaff,#7d7fff);
+    color:white;
+    border:none;
+    border-radius:14px;
+    padding:14px 30px;
+    font-size:18px;
+    font-weight:bold;
+
+    height:55px !important;
+    margin-top:0px !important;
+
+    box-shadow:0 0 10px cyan,
+               0 0 30px rgba(0,255,255,.5);
+}
+
+.result-card{
+    background:rgba(0,10,30,.85);
+    border:1px solid #9c4dff;
+    border-radius:18px;
+    padding:20px;
+    margin-top:20px;
+    box-shadow:0 0 20px rgba(156,77,255,.4);
+}
+.result-card{
+border:2px solid #00eaff;
+box-shadow:0 0 20px cyan;
+}
+
+.song-card{
+background:rgba(0,0,0,.6);
+border:1px solid cyan;
+border-radius:18px;
+padding:10px;
+box-shadow:0 0 15px rgba(0,255,255,.4);
+}
+.song-card:hover{
+transform:scale(1.05);
+transition:.3s;
+}
+
+.section-title{
+    color:#00d9ff;
+    font-size:32px;
+    font-weight:800;
+    margin-top:25px;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -129,59 +219,160 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================
+# TERMINAL BOXES
+# ==========================
+left,right = st.columns([1,1])
+with left:
+    st.markdown(f"""
+    <div style='
+        background-image:url("https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg");
+        background-size: cover;
+        background-position: center;
+        height:200px;
+        border-radius:20px;
+        box-shadow:0 0 25px #00ff88;
+    '>
+    </div>
+    """, unsafe_allow_html=True)
+
+with right:
+    st.markdown(f"""
+    <div style='
+        background-image:url("https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg");
+        background-size: cover;
+        background-position: center;
+        height:200px;
+        border-radius:20px;
+        box-shadow:0 0 25px cyan;
+    '>
+    </div>
+    """, unsafe_allow_html=True)
+# ==========================
 # SEARCH
 # ==========================
 main_left, main_right = st.columns([2,1])
 rec_songs = []
 
 with main_left:
-    user_input = st.text_input("", placeholder="🔍 Search for a song...")
-    search_btn = st.button("🔍 SEARCH", use_container_width=True)
+
+    user_input = st.text_input(
+        "",
+        placeholder="🔍 Search for a song..."
+    )
+
+    search_btn = st.button(
+        "🔍 SEARCH",
+        use_container_width=True
+    )
 
     if search_btn and user_input:
+
         with st.spinner("🎵 Finding best songs..."):
             rec_songs = recommend(user_input)
-
-# ==========================
+# ============================
 # RECOMMENDED SONGS
-# ==========================
+# ============================
+
 if rec_songs:
-    st.markdown("<div class='section-title'>🎵 RECOMMENDED SONGS</div>", unsafe_allow_html=True)
+
+    st.markdown(
+        "<div class='section-title'>🎵 RECOMMENDED SONGS</div>",
+        unsafe_allow_html=True
+    )
+
     cols = st.columns(5)
+
     for i, song in enumerate(rec_songs[:5]):
+
         with cols[i]:
-            st.markdown('<div class="song-card">', unsafe_allow_html=True)
+
             if song.get("thumbnail"):
                 st.image(song["thumbnail"], use_container_width=True)
-            st.markdown(f"<h4>{song['song']}</h4>", unsafe_allow_html=True)
-            st.markdown(f"<p style='color:#00d9ff;'>{song.get('artist','')}</p>", unsafe_allow_html=True)
-            spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
+
             st.markdown(
-                f"<a class='button-spotify' href='https://open.spotify.com/search/{spotify_query}' target='_blank'>🟢 Spotify</a>"
-                f"<a class='button-youtube' href='https://www.youtube.com/results?search_query={spotify_query}' target='_blank'>▶ YouTube</a>",
+                f"<h4 style='text-align:center'>{song['song']}</h4>",
                 unsafe_allow_html=True
             )
-            st.markdown('</div>', unsafe_allow_html=True)
 
-# ==========================
-# ALL SONGS LIBRARY
-# ==========================
-st.markdown("<div class='section-title'>🎵 ALL SONGS LIBRARY</div>", unsafe_allow_html=True)
+            st.markdown(
+                f"<p style='text-align:center;color:#00d9ff'>{song.get('artist','')}</p>",
+                unsafe_allow_html=True
+            )
+
+            spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
+
+            st.markdown(
+                f"""
+                <a href="https://open.spotify.com/search/{spotify_query}"
+                   target="_blank"
+                   style="
+                   display:block;
+                   text-align:center;
+                   padding:10px;
+                   background:#111827;
+                   border-radius:10px;
+                   color:white;
+                   text-decoration:none;
+                   margin-bottom:20px;
+                   ">
+                   🟢 PLAY ON SPOTIFY
+                </a>
+                """,
+                unsafe_allow_html=True
+            )
+
+# ============================
+# ALL SONGS LIBRARY (5-card layout)
+# ============================
+
+st.markdown(
+    "<div class='section-title'>🎵 ALL SONGS LIBRARY</div>",
+    unsafe_allow_html=True
+)
+
 cols = st.columns(5)
+
 for i, (_, row) in enumerate(df.head(20).iterrows()):
+
     with cols[i % 5]:
-        st.markdown('<div class="song-card">', unsafe_allow_html=True)
+
         thumb = row.get("thumbnail", "")
+
         if thumb:
             st.image(thumb, use_container_width=True)
+
         song_name = row.get("song_name", row.get("Song Name", ""))
+
         artist = row.get("artist", row.get("Artist", ""))
-        st.markdown(f"<h4>{song_name}</h4>", unsafe_allow_html=True)
-        st.markdown(f"<p style='color:#00d9ff;'>{artist}</p>", unsafe_allow_html=True)
-        spotify_query = f"{song_name} {artist}".replace(" ", "+")
+
         st.markdown(
-            f"<a class='button-spotify' href='https://open.spotify.com/search/{spotify_query}' target='_blank'>🟢 Spotify</a>"
-            f"<a class='button-youtube' href='https://www.youtube.com/results?search_query={spotify_query}' target='_blank'>▶ YouTube</a>",
+            f"""
+            <div style="text-align:center;">
+                <h4>{song_name}</h4>
+                <p style="color:#00d9ff;">{artist}</p>
+            </div>
+            """,
             unsafe_allow_html=True
         )
-        st.markdown('</div>', unsafe_allow_html=True)
+
+        spotify_query = f"{song_name} {artist}".replace(" ", "+")
+
+        st.markdown(
+            f"""
+            <a href="https://open.spotify.com/search/{spotify_query}"
+               target="_blank"
+               style="
+               display:block;
+               text-align:center;
+               padding:10px;
+               background:#111827;
+               border-radius:10px;
+               color:white;
+               text-decoration:none;
+               margin-bottom:20px;
+               ">
+               🟢 PLAY ON SPOTIFY
+            </a>
+            """,
+            unsafe_allow_html=True
+        )
