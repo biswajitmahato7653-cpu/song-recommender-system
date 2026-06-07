@@ -271,7 +271,6 @@ with main_left:
   
 ### Eita thik:
 
-```python
 if rec_songs:
 
     st.markdown(
