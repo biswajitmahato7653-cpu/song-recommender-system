@@ -101,68 +101,19 @@ def recommend(query, topn=10):
 st.set_page_config(page_title="Song Recommender", layout="wide")
 
 # ==========================
-# CSS & STYLE
+# CSS
 # ==========================
 st.markdown("""
 <style>
-.stApp{
-    background-image:url("https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg");
-    background-size:cover;
-    background-position:center;
-    background-attachment:fixed;
-}
-.hero-title{
-    font-size:75px;
-    font-weight:900;
-    text-align:center;
-    background: linear-gradient(90deg,#00ff88,#00eaff,#7d7dff,#ff4df8);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    text-shadow:0 0 15px cyan,0 0 30px cyan,0 0 60px cyan;
-}
-.section-title{
-    color:#00d9ff;
-    font-size:32px;
-    font-weight:800;
-    margin-top:25px;
-}
-.stTextInput input{
-    background: rgba(0,0,0,.85);
-    border:2px solid cyan;
-    color:white;
-    border-radius:18px;
-    height:55px !important;
-    min-height:55px !important;
-    font-size:20px;
-    padding-left:20px !important;
-    width:100%;
-    box-shadow:0 0 10px cyan,0 0 25px rgba(0,255,255,.4);
-}
-.stButton button{
-    background:linear-gradient(90deg,#00eaff,#7d7fff);
-    color:white;
-    border:none;
-    border-radius:14px;
-    padding:14px 30px;
-    font-size:18px;
-    font-weight:bold;
-    height:55px !important;
-    margin-top:0px !important;
-    box-shadow:0 0 10px cyan,0 0 30px rgba(0,255,255,.5);
-}
-.song-card{
-background:rgba(0,0,0,.65);
-padding:15px;
-border-radius:20px;
-border:1px solid cyan;
-text-align:center;
-box-shadow:0 0 15px rgba(0,255,255,.4);
-margin-bottom:15px;
-}
-.song-card:hover{
-transform:scale(1.05);
-transition:.3s;
-}
+.stApp { background-image:url('https://direct-coffee-kpibh2wx.edgeone.app/wp6195787.jpg'); background-size:cover; background-position:center; }
+.hero-title{ font-size:75px; font-weight:900; text-align:center; background: linear-gradient(90deg,#00ff88,#00eaff,#7d7dff,#ff4df8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 15px cyan,0 0 30px cyan; }
+.section-title{ color:#00d9ff; font-size:32px; font-weight:800; margin-top:25px; }
+.stTextInput input{ background: rgba(0,0,0,.85); border:2px solid cyan; color:white; border-radius:18px; height:55px !important; font-size:20px; padding-left:20px !important; width:100%; box-shadow:0 0 10px cyan,0 0 25px rgba(0,255,255,.4); }
+.stButton button{ background:linear-gradient(90deg,#00eaff,#7d7fff); color:white; border:none; border-radius:14px; padding:14px 30px; font-size:18px; font-weight:bold; height:55px !important; margin-top:0px !important; box-shadow:0 0 10px cyan,0 0 30px rgba(0,255,255,.5); }
+.song-card{background:rgba(0,0,0,.65); padding:15px; border-radius:20px; border:1px solid cyan; text-align:center; box-shadow:0 0 15px rgba(0,255,255,.4); margin-bottom:15px;}
+.song-card:hover{transform:scale(1.05); transition:.3s;}
+.button-spotify{background:#1DB954;color:white; padding:8px 10px; border-radius:8px; text-decoration:none; display:inline-block; margin:5px;}
+.button-youtube{background:#FF0000;color:white; padding:8px 10px; border-radius:8px; text-decoration:none; display:inline-block; margin:5px;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -178,7 +129,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================
-# SEARCH + RECOMMENDATION
+# SEARCH
 # ==========================
 main_left, main_right = st.columns([2,1])
 rec_songs = []
@@ -195,26 +146,21 @@ with main_left:
 # RECOMMENDED SONGS
 # ==========================
 if rec_songs:
-
     st.markdown("<div class='section-title'>🎵 RECOMMENDED SONGS</div>", unsafe_allow_html=True)
     cols = st.columns(5)
-
     for i, song in enumerate(rec_songs[:5]):
         with cols[i]:
             st.markdown('<div class="song-card">', unsafe_allow_html=True)
-
             if song.get("thumbnail"):
                 st.image(song["thumbnail"], use_container_width=True)
-
             st.markdown(f"<h4>{song['song']}</h4>", unsafe_allow_html=True)
             st.markdown(f"<p style='color:#00d9ff;'>{song.get('artist','')}</p>", unsafe_allow_html=True)
-
             spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
             st.markdown(
-                f"<a href='https://open.spotify.com/search/{spotify_query}' target='_blank' style='display:block;text-align:center;padding:10px;background:#111827;border-radius:10px;color:white;text-decoration:none;margin-bottom:10px;'>🟢 PLAY ON SPOTIFY</a>",
+                f"<a class='button-spotify' href='https://open.spotify.com/search/{spotify_query}' target='_blank'>🟢 Spotify</a>"
+                f"<a class='button-youtube' href='https://www.youtube.com/results?search_query={spotify_query}' target='_blank'>▶ YouTube</a>",
                 unsafe_allow_html=True
             )
-
             st.markdown('</div>', unsafe_allow_html=True)
 
 # ==========================
@@ -222,25 +168,20 @@ if rec_songs:
 # ==========================
 st.markdown("<div class='section-title'>🎵 ALL SONGS LIBRARY</div>", unsafe_allow_html=True)
 cols = st.columns(5)
-
 for i, (_, row) in enumerate(df.head(20).iterrows()):
     with cols[i % 5]:
         st.markdown('<div class="song-card">', unsafe_allow_html=True)
-
         thumb = row.get("thumbnail", "")
         if thumb:
             st.image(thumb, use_container_width=True)
-
         song_name = row.get("song_name", row.get("Song Name", ""))
         artist = row.get("artist", row.get("Artist", ""))
-
         st.markdown(f"<h4>{song_name}</h4>", unsafe_allow_html=True)
         st.markdown(f"<p style='color:#00d9ff;'>{artist}</p>", unsafe_allow_html=True)
-
         spotify_query = f"{song_name} {artist}".replace(" ", "+")
         st.markdown(
-            f"<a href='https://open.spotify.com/search/{spotify_query}' target='_blank' style='display:block;text-align:center;padding:10px;background:#111827;border-radius:10px;color:white;text-decoration:none;margin-bottom:10px;'>🟢 PLAY ON SPOTIFY</a>",
+            f"<a class='button-spotify' href='https://open.spotify.com/search/{spotify_query}' target='_blank'>🟢 Spotify</a>"
+            f"<a class='button-youtube' href='https://www.youtube.com/results?search_query={spotify_query}' target='_blank'>▶ YouTube</a>",
             unsafe_allow_html=True
         )
-
         st.markdown('</div>', unsafe_allow_html=True)
