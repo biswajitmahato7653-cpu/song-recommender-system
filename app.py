@@ -250,7 +250,6 @@ with right:
 # ==========================
 # SEARCH
 # ==========================
-st.write("Total recommendations:", len(rec_songs))
 main_left, main_right = st.columns([2,1])
 rec_songs = []
 
@@ -270,50 +269,72 @@ with main_left:
 
         with st.spinner("🎵 Finding best songs..."):
             rec_songs = recommend(user_input)
-st.write("Total recommendations:", len(rec_songs))
-if rec_songs:
 
-    st.markdown(
-        "<div class='section-title'>🔎 SEARCH RESULTS</div>",
-        unsafe_allow_html=True
-    )
-
-    cols = st.columns(5)
-
-    for i, song in enumerate(rec_songs[:5]):
-
-        with cols[i]:
-
-            if song.get("thumbnail"):
-                st.image(song["thumbnail"], use_container_width=True)
+        if rec_songs:
 
             st.markdown(
-                f"<h4 style='text-align:center'>{song['song']}</h4>",
+                "<div class='section-title'>🔎 SEARCH RESULT</div>",
                 unsafe_allow_html=True
             )
 
-            st.markdown(
-                f"<p style='text-align:center;color:#00d9ff'>{song.get('artist','')}</p>",
-                unsafe_allow_html=True
-            )
+            # Top 5 recommendations loop
+            for song in rec_songs[:5]:
+                c1, c2 = st.columns([1,3])
+                
+                with c1:
+                    if song.get("thumbnail"):
+                        st.image(song["thumbnail"], width=130)
+                
+                with c2:
+                    st.markdown(f"### {song['song']}")
+                    st.write(f"🎤 {song.get('artist','')}")
+                    
+                    spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
+                    
+                    b1, b2 = st.columns(2)
+                    with b1:
+                        st.link_button(
+                            "🟢 PLAY ON SPOTIFY",
+                            f"https://open.spotify.com/search/{spotify_query}",
+                            use_container_width=True
+                        )
+                    with b2:
+                        st.link_button(
+                            "▶ YOUTUBE PLAY",
+                            f"https://www.youtube.com/results?search_query={spotify_query}",
+                            use_container_width=True
+                        )
+                
+                st.divider()
 
-            spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
+# Show hero if no recommendations
+if not rec_songs:
+    with main_right:
+        st.markdown("""
+        <div style='
+            text-align:center;
+            margin-top:60px;
+        '>
+            <h1 style='
+                font-size:120px;
+                color:#00eaff;
+                text-shadow:0 0 25px cyan;
+                margin-bottom:10px;
+            '>
+                UNIX
+            </h1>
+            <p style='
+                color:#00eaff;
+                font-size:26px;
+                letter-spacing:3px;
+            '>
+                LIVE. CODE. RECOMMEND.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
-            st.link_button(
-                "🟢 Spotify",
-                f"https://open.spotify.com/search/{spotify_query}",
-                use_container_width=True
-            )
-
-            st.link_button(
-                "▶ YouTube",
-                f"https://www.youtube.com/results?search_query={spotify_query}",
-                use_container_width=True
-            )
-
-    st.divider()
 # ==========================
-# ALL SONGS LIBRARY
+# ALL SONGS LIBRARY (5-card layout)
 # ==========================
 st.markdown(
     "<div class='section-title'>🎵 ALL SONGS LIBRARY</div>",
@@ -322,30 +343,34 @@ st.markdown(
 
 cols = st.columns(5)
 
+# Top 10 songs (or adjust as needed)
 for i, (_, row) in enumerate(df.head(10).iterrows()):
 
     song_name = row['song_name'] if 'song_name' in df.columns else row['Song Name']
     artist_name = row['artist'] if 'artist' in df.columns else row['Artist']
 
+    # Assign column based on index
     with cols[i % 5]:
 
+        # Thumbnail
         thumb = row.get("thumbnail")
-
         if pd.notna(thumb):
             st.image(thumb, use_container_width=True)
 
+        # Song title
         st.markdown(
             f"<h4 style='text-align:center'>{song_name}</h4>",
             unsafe_allow_html=True
         )
 
+        # Artist
         st.markdown(
             f"<p style='text-align:center;color:#00d9ff'>{artist_name}</p>",
             unsafe_allow_html=True
         )
 
+        # Spotify search button
         q = f"{song_name} {artist_name}".replace(" ","+")
-
         st.link_button(
             "🟢 PLAY",
             f"https://open.spotify.com/search/{q}",
