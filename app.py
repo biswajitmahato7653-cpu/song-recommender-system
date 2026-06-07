@@ -423,21 +423,20 @@ for i, (_, row) in enumerate(df.head(10).iterrows()):
 # ==========================
 # RECOMMENDED FOR YOU (Styled)
 # ==========================
+rec_songs = []
 if search_btn and user_input:
 
     with st.spinner("🎵 Finding best songs..."):
         rec_songs = recommend(user_input)
         if rec_songs:
-        st.markdown(
-            "<div class='section-title'>🔎 SEARCH RESULT</div>",
-            unsafe_allow_html=True
-        )
 
-        cols = st.columns(5)
+    st.markdown(...)
 
-        for i, song in enumerate(rec_songs[:5]):
-            with cols[i]:
-                ...
+    cols = st.columns(5)
+
+    for i, song in enumerate(rec_songs[:5]):
+
+        with cols[i]:
 
             st.markdown("""
             <div style="
