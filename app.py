@@ -367,81 +367,32 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
-    "<div class='section-title'>🎵 ALL SONGS LIBRARY</div>",
-    unsafe_allow_html=True
-)
+cols = st.columns(5)
 
-songs_show = df.head(20)
+for i, song in enumerate(recommend("love",5)):
 
-for _, row in songs_show.iterrows():
+    with cols[i]:
 
-    thumb = row.get("thumbnail", "")
-
-    song_name = row.get("song_name", row.get("Song Name", ""))
-
-    artist = row.get("artist", row.get("Artist", ""))
-
-    spotify_query = f"{song_name} {artist}".replace(" ", "+")
-
-    youtube_query = f"{song_name} {artist}".replace(" ", "+")
-
-    col1, col2, col3 = st.columns([1,3,1])
-
-    with col1:
-        if thumb:
-            st.image(thumb, width=150)
-
-    with col2:
-        st.markdown(
-            f"""
-            <h2 style='margin-bottom:0'>{song_name}</h2>
-            <p style='color:#00eaff;font-size:22px'>{artist}</p>
-            """,
-            unsafe_allow_html=True
-        )
-
-    with col3:
+        if song.get("thumbnail"):
+            st.image(song["thumbnail"], use_container_width=True)
 
         st.markdown(
-            f"""
-            <a href="https://open.spotify.com/search/{spotify_query}"
-            target="_blank"
-            style="
-            display:block;
-            text-align:center;
-            padding:12px;
-            background:#0f172a;
-            border:1px solid #00ff88;
-            border-radius:10px;
-            color:white;
-            text-decoration:none;
-            margin-bottom:10px;
-            ">
-            🟢 PLAY ON SPOTIFY
-            </a>
-            """,
+            f"<h4 style='text-align:center'>{song['song']}</h4>",
             unsafe_allow_html=True
         )
 
         st.markdown(
-            f"""
-            <a href="https://www.youtube.com/results?search_query={youtube_query}"
-            target="_blank"
-            style="
-            display:block;
-            text-align:center;
-            padding:12px;
-            background:#0f172a;
-            border:1px solid #a855f7;
-            border-radius:10px;
-            color:white;
-            text-decoration:none;
-            ">
-            ▶ YOUTUBE PLAY
-            </a>
-            """,
+            f"<p style='text-align:center;color:#00d9ff'>{song['artist']}</p>",
             unsafe_allow_html=True
         )
 
-    st.markdown("<hr>", unsafe_allow_html=True)
+        spotify_query = (
+            f"{song['song']} {song['artist']}"
+            .replace(" ","+")
+        )
+
+        st.link_button(
+            "🟢 PLAY",
+            f"https://open.spotify.com/search/{spotify_query}",
+            use_container_width=True
+        )
