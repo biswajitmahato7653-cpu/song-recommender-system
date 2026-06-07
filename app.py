@@ -268,46 +268,48 @@ with main_left:
      with st.spinner("🎵 Finding best songs..."):
         rec_songs = recommend(user_input)
 
-    if rec_songs:
+  
+### Eita thik:
 
-```
-st.markdown(
-    "<div class='section-title'>🔎 SEARCH RESULT</div>",
-    unsafe_allow_html=True
-)
+```python
+if rec_songs:
 
-song = rec_songs[0]
+    st.markdown(
+        "<div class='section-title'>🔎 SEARCH RESULT</div>",
+        unsafe_allow_html=True
+    )
 
-c1, c2 = st.columns([1,3])
+    song = rec_songs[0]
 
-with c1:
-    if song.get("thumbnail"):
-        st.image(song["thumbnail"], width=130)
+    c1, c2 = st.columns([1,3])
 
-with c2:
-    st.markdown(f"### {song['song']}")
-    st.write(f"🎤 {song.get('artist','')}")
+    with c1:
+        if song.get("thumbnail"):
+            st.image(song["thumbnail"], width=130)
 
-    spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
+    with c2:
+        st.markdown(f"### {song['song']}")
+        st.write(f"🎤 {song.get('artist','')}")
 
-    b1, b2 = st.columns(2)
+        spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
 
-    with b1:
-        st.link_button(
-            "🟢 PLAY ON SPOTIFY",
-            f"https://open.spotify.com/search/{spotify_query}",
-            use_container_width=True
-        )
+        b1, b2 = st.columns(2)
 
-    with b2:
-        st.link_button(
-            "▶ YOUTUBE PLAY",
-            f"https://www.youtube.com/results?search_query={spotify_query}",
-            use_container_width=True
-        )
+        with b1:
+            st.link_button(
+                "🟢 PLAY ON SPOTIFY",
+                f"https://open.spotify.com/search/{spotify_query}",
+                use_container_width=True
+            )
 
-st.divider()
-```
+        with b2:
+            st.link_button(
+                "▶ YOUTUBE PLAY",
+                f"https://www.youtube.com/results?search_query={spotify_query}",
+                use_container_width=True
+            )
+
+    st.divider()
 
 
 with main_right:
@@ -385,10 +387,12 @@ for i, (_, row) in enumerate(df.head(10).iterrows()):
 # RECOMMENDED FOR YOU (Styled)
 # ==========================
 if search_btn and user_input:
+
     with st.spinner("🎵 Finding best songs..."):
         rec_songs = recommend(user_input)
 
     if rec_songs:
+        ...
         st.markdown(
             "<div class='section-title'>🔎 SEARCH RESULT</div>",
             unsafe_allow_html=True
