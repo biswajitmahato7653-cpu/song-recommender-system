@@ -269,33 +269,46 @@ with main_left:
 
         with st.spinner("🎵 Finding best songs..."):
             rec_songs = recommend(user_input)
-if rec_songs:
-    st.markdown("<div class='section-title'>🎵 RECOMMENDED SONGS</div>", unsafe_allow_html=True)
+# ============================
+# RECOMMENDED SONGS (Top 5)
+# ============================
 
+if rec_songs:
+    # Section title, ekbar matro
+    st.markdown(
+        "<div class='section-title'>🎵 RECOMMENDED SONGS</div>",
+        unsafe_allow_html=True
+    )
+
+    cols = st.columns(5)
+
+    for i, song in enumerate(rec_songs[:5]):
+        with cols[i % 5]:
+            # Thumbnail
+            if song.get("thumbnail"):
+                st.image(song["thumbnail"], use_container_width=True)
+
+            # Song name
             st.markdown(
-                "<div class='section-title'>🔎 SEARCH RESULT</div>",
+                f"<h4 style='text-align:center'>{song['song']}</h4>",
                 unsafe_allow_html=True
             )
 
-            # Top 5 recommendations loop
-            for song in rec_songs[:5]:
-                st.markdown(
-    "<div class='section-title'>🎵 RECOMMENDED SONGS</div>",
-    unsafe_allow_html=True
-)
+            # Artist name
+            st.markdown(
+                f"<p style='text-align:center;color:#00d9ff'>{song.get('artist','')}</p>",
+                unsafe_allow_html=True
+            )
 
-cols = st.columns(5)
-for i, song in enumerate(rec_songs[:5]):
-    with cols[i % 5]:
-        if song.get("thumbnail"):
-            st.image(song["thumbnail"], use_container_width=True)
-        
-        st.markdown(f"<h4 style='text-align:center'>{song['song']}</h4>", unsafe_allow_html=True)
-        st.markdown(f"<p style='text-align:center;color:#00d9ff'>{song.get('artist','')}</p>", unsafe_allow_html=True)
-
-        spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
-        st.link_button("🟢 PLAY ON SPOTIFY", f"https://open.spotify.com/search/{spotify_query}", use_container_width=True)
-if not rec_songs:
+            # Spotify search button
+            spotify_query = f"{song['song']} {song.get('artist','')}".replace(" ", "+")
+            st.link_button(
+                "🟢 PLAY ON SPOTIFY",
+                f"https://open.spotify.com/search/{spotify_query}",
+                use_container_width=True
+            )
+else:
+    # Jodi recommendation na thake, hero show koro
     st.image("path_to_hero_image.png", use_container_width=True)
     st.markdown(
         "<div class='section-title'>Discover. Play. Feel The Music.</div>",
