@@ -270,7 +270,7 @@ with main_left:
 
         with st.spinner("🎵 Finding best songs..."):
             rec_songs = recommend(user_input)
-
+st.write("Total recommendations:", len(rec_songs))
 if rec_songs:
 
     st.markdown(
