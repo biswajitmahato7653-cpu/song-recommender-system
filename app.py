@@ -429,8 +429,10 @@ if search_btn and user_input:
     with st.spinner("🎵 Finding best songs..."):
         rec_songs = recommend(user_input)
         if rec_songs:
-
-    st.markdown(...)
+    st.markdown(
+        "<div class='section-title'>🔎 SEARCH RESULT</div>",
+        unsafe_allow_html=True
+    )
 
     cols = st.columns(5)
 
