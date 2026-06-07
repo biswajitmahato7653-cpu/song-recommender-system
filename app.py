@@ -265,7 +265,7 @@ with main_left:
     # Search Results
     if search_btn and user_input:
 
-    with st.spinner("🎵 Finding best songs..."):
+     with st.spinner("🎵 Finding best songs..."):
         rec_songs = recommend(user_input)
 
     if rec_songs:
